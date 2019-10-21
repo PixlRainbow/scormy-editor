@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>SCORMy Editor</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/source/styles/smart.default.css" />
+	<link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/demos.css" />
+	<link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/common.css" />
+    <script src='main.js'></script>
+</head>
+<body>
+    <section id="content">
+        <button class="file-open">New Project</button>
+        <button class="file-open" onclick="open_file_dialog()">Existing Project</button>
+        <input type="file" hidden accept="application/json" oninput="load_file(event)">
+    </section>
+</body>
+</html>
