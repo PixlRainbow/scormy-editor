@@ -6,7 +6,9 @@ class SimpleElement {
     children = [];
     text = "";
 }
+
 function start_editor(){
+    /*
     var workingString = window.sessionStorage.getItem("workingData");
     if(!workingString){
         window.workingData = {
@@ -15,22 +17,23 @@ function start_editor(){
     }else{
         window.workingData = JSON.parse(workingString);
     }
-    console.dir(window.workingData);
+    console.dir(window.workingData);*/
+    add_slide("Slide 1");
 }
 /**
  * 
- * @param {string} t qn or info
- * @param {[SimpleElement]} c HTML content of slide
- * @param {number} formid index of form in document. Null if not a question.
- * @param {[number]} correctAnswer index position for correct answer. More than one value if checkbox. Empty if not a question.
+ * @param {string} label label name
  */
-function add_slide(t, c = [], formid = null, correctAnswer = []){
+function add_slide(label){
+    /*
     var slide = {
         type: t,
         formIndex: formid,
         content: c,
         answer: correctAnswer
-    };
-    window.workingData.slides.push(slide);
+    };*/
+    const tabs = document.querySelector('smart-tabs'); 
+    tabs.insert(2,{"label":label});
+    //window.workingData.slides.push(slide);
     //TODO: render slide. Use DOMParser for content
 }

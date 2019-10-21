@@ -17,11 +17,12 @@
 </head>
 <body onload="start_editor()">
     <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1" reorder close-buttons>
+        <!--
 		<smart-tab-item label="Slide 1">
             <smart-button class="flat">Add Question</smart-button>
             <smart-button class="flat">Add Info Slide</smart-button>
-        </smart-tab-item>
+        </smart-tab-item>-->
     </smart-tabs>
-    <smart-button class="primary">+</smart-button>
+    <smart-button class="primary" onclick="add_slide(window.prompt('Enter slide name'));">+</smart-button>
 </body>
 </html>
