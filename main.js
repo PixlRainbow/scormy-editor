@@ -7,7 +7,8 @@ function load_file(ev){
             var jsonfile = ev.target.files[0];
             (new Response(jsonfile)).json().then((obj) => {
                 console.dir(obj);
-                window.workingData = obj;
+                //window.workingData = obj;
+                window.sessionStorage.setItem('workingData', JSON.stringify(obj))
                 alert("yay");
             }).catch((err) => {
                 alert(err);
