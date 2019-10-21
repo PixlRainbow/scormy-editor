@@ -16,6 +16,16 @@ function start_editor(){
         window.workingData = JSON.parse(workingString);
     }
     console.dir(window.workingData);
+    document.getElementById("horizontalTabs1").addEventListener('reorder',
+        (ev) => {console.dir(ev)}
+    );
+    //repeated code -- TODO factorize
+    var template = document.getElementById('new-slide');
+    var clone = document.importNode(template.content, true);
+    select_slide(0).appendChild(clone);
+}
+function select_slide(i){
+    return document.querySelectorAll("smart-tabs smart-tab-item")[i];
 }
 /**
  * 
@@ -33,4 +43,22 @@ function add_slide(t, c = [], formid = null, correctAnswer = []){
     };
     window.workingData.slides.push(slide);
     //TODO: render slide. Use DOMParser for content
+}
+/**
+ * 
+ * @param {Element} infoBtn 
+ */
+function add_info_slide(infoBtn) {
+    infoBtn.parentElement.contentEditable = "true";
+    infoBtn.parentElement.innerHTML = "<p>Click here to edit text</p>"
+}
+function detect_new_slide(ev){
+    var template = document.getElementById('new-slide');
+    var clone = document.importNode(template.content, true);
+    if(!select_slide(ev.detail.index).content){
+        console.dir(clone);
+        Array.from(clone.children).forEach((btn) => {
+            select_slide(ev.detail.index).content += btn.outerHTML;
+        });
+    }
 }
