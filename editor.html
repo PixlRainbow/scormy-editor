@@ -18,8 +18,6 @@
     <script type="text/javascript" src='editor.js'></script>
 </head>
 <body onload="start_editor()">
-    <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
-        reorder close-buttons add-new-tab onchange="detect_new_slide(event)">
         <template id="new-slide">
             <smart-button class="flat">Add Question</smart-button>
             <smart-button class="flat" onclick="add_info_slide(this)">Add Info Slide</smart-button>
@@ -51,6 +49,8 @@
                 );
             </script> 
         </template>
+    <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
+        reorder close-buttons add-new-tab onchange="detect_new_slide(event)">
 		<smart-tab-item label="Slide 1">
         </smart-tab-item>
     </smart-tabs>
