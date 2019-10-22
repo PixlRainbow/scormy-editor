@@ -24,7 +24,7 @@ function start_editor(){
     var clone = document.importNode(template.content, true);
     select_slide(0).appendChild(clone);
 
-    document.getElementsByClassName("demoTabs")[0].addEventListener("change", detect_new_slide);
+    //document.getElementsByClassName("demoTabs")[0].addEventListener("change", detect_new_slide);
 }
 function select_slide(i){
     return document.querySelectorAll("smart-tabs smart-tab-item")[i];
@@ -56,7 +56,6 @@ function add_info_slide(infoBtn) {
     console.dir(infoBtn.parentElement);
 }
 function detect_new_slide(ev){
-    if ("demoTabs" in ev.target.classList){
     var template = document.getElementById('new-slide');
     var clone = document.importNode(template.content, true);
     if(!select_slide(ev.detail.index).content){
@@ -65,13 +64,13 @@ function detect_new_slide(ev){
             select_slide(ev.detail.index).content += btn.outerHTML;
         });
     }
-}
+
 }
 
 function add_radio_slide(qBtn,options) {
     var str= "";
     str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)">`
-    str += `<form action="/action_page.php">
+    str += `<form action="/action_page.php" onchange="event.stopPropagation();">
     <p class="resizeToContent" contentEditable="true">Please select your gender:</p><br />`;
     console.dir(qBtn.parentElement);
     var currOptionNum = 1;
