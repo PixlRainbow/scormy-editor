@@ -35,9 +35,9 @@ body > smart-button.primary > button {
 smart-tabs#horizontalTabs1 {
     width: 100%;
 }
-smart-tabs#horizontalTabs1 div.smart-tab-strip {
+/* smart-tabs#horizontalTabs1 div.smart-tab-strip {
     width: calc(100% - 3em);
-}
+} */
 smart-tab-item > div.smart-container:empty::after{
     content: "Click here to edit text";
     color: lightgray;
