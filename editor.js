@@ -80,7 +80,7 @@ function add_radio_slide(qBtn,options) {
     var str= "";
 
     //to be shifted into general question slide 
-    str += `<qnaSlide answered=false/>`
+    str += `<qnaSlide answered="false"/>`
 
     str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
     onfocusout="toolbarHide(this)">`
@@ -165,6 +165,7 @@ function nextSlide(btn){
     let selectedIndex = tabs.selectedIndex;
     if (selectedIndex < tabs.getElementsByTagName("smart-tab-item").length -1) tabs.selectedIndex+=1;
     btn.disabled = true;
+    let tab = tabs.getElementsByTagName("smart-tab-item")[tabs.selectedIndex];
     if (!(tab.getElementsByTagName("qnaSlide").length && tab.getElementsByTagName("qnaSlide")[0].getAttribute("answered") == "false")) btn.disabled = false;
 }
 
