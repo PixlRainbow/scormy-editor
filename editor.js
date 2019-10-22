@@ -94,6 +94,7 @@ function dragstart(ev){
     var rect = ev.target.getBoundingClientRect();
     //ev.dataTransfer.setData("text", rect.left + "," + rect.top); //cannot be read in events other than dragstart and drop because protected mode
     localStorage.setItem("rectPos",(ev.clientX - rect.left)+","+(ev.clientY - rect.top));
+
     ev.target.classList.add("being-dragged");
 }
 function allowDrop(ev){
@@ -104,7 +105,23 @@ function drag(ev){
     ev.target.classList.remove("being-dragged");
     var containerRect = ev.target.parentElement.getBoundingClientRect();
     var data = localStorage.getItem("rectPos").split(",");
+    
     ev.target.style.position = "absolute";
-    ev.target.style.left =  ev.clientX -containerRect.left - data[0] + "px";
-    ev.target.style.top = ev.clientY -containerRect.top - data[1]  + "px";
+    var newX = ev.clientX -containerRect.left - data[0];
+    var newY = ev.clientY -containerRect.top - data[1];
+
+    var rect = ev.target.getBoundingClientRect();
+
+    //containerRect.width and .height to be replaced with screensize width and height
+
+    if (newX + rect.width > containerRect.width) newX = containerRect.width-rect.width;
+    else if (newX < 0) {newX = 0;}
+
+    if (newY + rect.height > containerRect.height) newY = containerRect.height-rect.height;
+    else if (newY < 0) {newY = 0;}
+
+    ev.target.style.left =  newX + "px";
+    ev.target.style.top = newY  + "px";
+
+    
 }
