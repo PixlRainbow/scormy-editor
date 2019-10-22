@@ -32,19 +32,54 @@ button.file-open:hover {
 body > smart-button.primary > button {
     line-height: 2;
 } */
+smart-tabs {
+    /* height: 50vh; */
+    --smart-tabs-default-height: 80vh;
+}
 smart-tabs#horizontalTabs1 {
     width: 100%;
 }
-smart-tabs#horizontalTabs1 div.smart-tab-strip {
+/* smart-tabs#horizontalTabs1 div.smart-tab-strip {
     width: calc(100% - 3em);
-}
+} */
 smart-tab-item > div.smart-container:empty::after{
     content: "Click here to edit text";
     color: lightgray;
+}
+
+.optionLabel:empty::before{
+    color:lightgrey;
+    content:"Click to enter text...";
+}
+
+.draggable:focus-within{
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+.resizeToContent{
+    display:inline-block;
+}
+
+
+div.ql-container {
+    height:50vh;
 }
 
 @media only screen and (max-device-width: 340px) {
     section#content {
         flex-flow: column;
     }
+}
+
+#menu{
+    position:absolute;
+    display: block;
+    z-index: 50000;
+    visibility: hidden;
+}
+
+smart-menu{
+    --smart-menu-default-width: 150px;
+    text-align:center;
 }
