@@ -38,6 +38,10 @@ smart-tabs#horizontalTabs1 {
 smart-tabs#horizontalTabs1 div.smart-tab-strip {
     width: calc(100% - 3em);
 }
+smart-tab-item > div.smart-container:empty::after{
+    content: "Click here to edit text";
+    color: lightgray;
+}
 
 @media only screen and (max-device-width: 340px) {
     section#content {
