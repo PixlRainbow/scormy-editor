@@ -1,3 +1,6 @@
+var lastInfoPage = 1;
+var infoEditors = [];
+
 class SimpleElement {
     tagName = "";
     id = "";
@@ -49,8 +52,15 @@ function add_slide(t, c = [], formid = null, correctAnswer = []){
  * @param {Element} infoBtn 
  */
 function add_info_slide(infoBtn) {
-    infoBtn.parentElement.contentEditable = "true";
-    infoBtn.parentElement.innerHTML = "<p>Click here to edit text</p>"
+    //infoBtn.parentElement.contentEditable = "true";
+    //infoBtn.parentElement.innerHTML = "<p>Click here to edit text</p>"
+    var template = document.getElementById('new-info-slide');
+    var clone = document.importNode(template.content, true);
+    clone.firstElementChild.id += lastInfoPage.toString();
+    var infoBox = infoBtn.parentElement;
+    infoBox.innerHTML = "";
+    infoBox.appendChild(clone);
+    infoBox.style.padding = "0";
 }
 function detect_new_slide(ev){
     var template = document.getElementById('new-slide');

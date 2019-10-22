@@ -43,6 +43,10 @@ smart-tab-item > div.smart-container:empty::after{
     color: lightgray;
 }
 
+div.ql-container {
+    height:50vh;
+}
+
 @media only screen and (max-device-width: 340px) {
     section#content {
         flex-flow: column;
