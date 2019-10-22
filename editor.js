@@ -17,7 +17,36 @@ function start_editor(){
             slides: []
         };
     }else{
-        window.workingData = JSON.parse(workingString);
+        try {
+            tabs.remove(0);
+            window.workingData = JSON.parse(workingString);
+
+            for(let i = 0; i < window.workingData.slides.length; i++){
+                let thisSlide = window.workingData.slides[i];
+                let content = "";
+                if(thisSlide.type === "info"){
+                    let template = document.getElementById('new-info-slide');
+                    let clone = document.importNode(template.content, true);
+                    clone.firstElementChild.id += lastInfoPage.toString();
+                    Array.from(clone.children).forEach((elem) => {
+                        content += elem.outerHTML;
+                    });
+                }else{
+                    content = "<p>some q shit</p>"
+                }
+                console.log(content);
+                tabs.insert(i, {
+                    "label": `Slide ${i + 1}`,
+                    "content": content
+                });
+                if(thisSlide.type === "info"){
+                    add_info_editor();
+                    infoEditors[i].setContents(thisSlide.content);
+                }
+            }
+        } catch (error) {
+            alert(error);
+        }
     }
     console.dir(window.workingData);
     tabs.addEventListener('reorder',
