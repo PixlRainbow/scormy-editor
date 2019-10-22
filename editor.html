@@ -26,29 +26,6 @@
         <template id="new-info-slide">
             <!-- Create the editor container -->
             <div id="editor"></div>
-            
-            <!-- Initialize Quill editor -->
-            <script>
-                infoEditors.push(
-                    new Quill(`#editor${lastInfoPage++}`, {
-                        modules: {
-                            toolbar: [
-                                [{ header: [1, 2, false] }],
-                                ['bold', 'italic', 'underline'],
-                                ['image', 'code-block', 'blockquote'],
-                                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                [{ 'indent': '-1'}, { 'indent': '+1' }],
-                                [{ 'color': [] }, { 'background': [] }],
-                                [{ 'font': [] }],
-                                [{ 'align': [] }],
-                                ['clean'] //'remove formatting' button
-                            ]
-                        },
-                        placeholder: 'Click here to edit text',
-                        theme: 'snow'
-                    })
-                );
-            </script> 
         </template>
     <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
         reorder close-buttons add-new-tab>

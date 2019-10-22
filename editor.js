@@ -63,6 +63,28 @@ function add_info_slide(infoBtn) {
     infoBox.innerHTML = "";
     infoBox.appendChild(clone);
     infoBox.style.padding = "0";
+    add_info_editor();
+}
+function add_info_editor(){
+    infoEditors.push(
+        new Quill(`#editor${lastInfoPage++}`, {
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block', 'blockquote'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'font': [] }],
+                    [{ 'align': [] }],
+                    ['clean'] //'remove formatting' button
+                ]
+            },
+            placeholder: 'Click here to edit text',
+            theme: 'snow'
+        })
+    );
 }
 function detect_new_slide(ev){
     var template = document.getElementById('new-slide');
