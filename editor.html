@@ -20,7 +20,14 @@
     <script type="text/javascript" src="editor_api.js"></script>
 </head>
 <body onload="start_editor()">
-
+    <div id="menu">
+    <smart-menu animation="simple" unfocusable> 
+        <smart-menu-item shortcut="Ctrl+B"><b fontSize="14" bold>B</b></smart-menu-item>
+        <smart-menu-item shortcut="Ctrl+N">
+        <input type="text" id="fontSize" size="2px" value="12">
+        </smart-menu-item>
+    </smart-menu>
+    </div>
     <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
         reorder close-buttons add-new-tab onchange="detect_new_slide(event)">
         <template id="new-slide">
@@ -54,11 +61,8 @@
                 );
             </script> 
         </template>
-    <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
-        reorder close-buttons add-new-tab onchange="detect_new_slide(event)">
-		<smart-tab-item label="Slide 1">
+        <smart-tab-item label="Slide 1">
         </smart-tab-item>
-    </smart-tabs>
     <!-- <smart-button class="primary">+</smart-button> -->
 </body>
 </html>

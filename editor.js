@@ -78,7 +78,8 @@ function detect_new_slide(ev){
 
 function add_radio_slide(qBtn,options) {
     var str= "";
-    str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)">`
+    str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
+    onfocusout="toolbarHide(this)">`
     str += `<form action="/action_page.php" onchange="event.stopPropagation();">
     <p class="resizeToContent" contentEditable="true">Please select your gender:</p><br />`;
     console.dir(qBtn.parentElement);
@@ -132,4 +133,23 @@ function drag(ev){
     ev.target.style.top = newY  + "px";
 
     
+}
+
+function toolbarAppear(div){
+    console.log("div has been focused!");
+    var menu = document.getElementById("menu");
+    
+    console.dir(div);
+    menu.style.top = div.style.top;
+    //console.log(menu.style.top);
+    menu.style.top = parseInt(menu.style.top) - 5 + "px";
+    menu.style.left = div.style.left; 
+    menu.style.left = parseInt(menu.style.left) + 5 + "px";
+    menu.style.visibility = 'visible';
+    //ev.target
+}
+function toolbarHide(ev){
+    /*
+    var menu = document.getElementById("menu");
+    menu.style.visibility = 'hidden';*/
 }

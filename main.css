@@ -71,3 +71,15 @@ div.ql-container {
         flex-flow: column;
     }
 }
+
+#menu{
+    position:absolute;
+    display: block;
+    z-index: 50000;
+    visibility: hidden;
+}
+
+smart-menu{
+    --smart-menu-default-width: 150px;
+    text-align:center;
+}
