@@ -39,9 +39,9 @@ smart-tabs {
 smart-tabs#horizontalTabs1 {
     width: 100%;
 }
-smart-tabs#horizontalTabs1 div.smart-tab-strip {
+/* smart-tabs#horizontalTabs1 div.smart-tab-strip {
     width: calc(100% - 3em);
-}
+} */
 smart-tab-item > div.smart-container:empty::after{
     content: "Click here to edit text";
     color: lightgray;
@@ -61,6 +61,10 @@ smart-tab-item > div.smart-container:empty::after{
     display:inline-block;
 }
 
+
+div.ql-container {
+    height:50vh;
+}
 
 @media only screen and (max-device-width: 340px) {
     section#content {
