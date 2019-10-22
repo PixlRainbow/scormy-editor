@@ -24,14 +24,14 @@ button.file-open:hover {
     filter: invert(1) contrast(0.5);
 }
 
-body > smart-button.primary {
+/* body > smart-button.primary {
     position:fixed;
     top:0;
     right:0;
 }
 body > smart-button.primary > button {
     line-height: 2;
-}
+} */
 smart-tabs#horizontalTabs1 {
     width: 100%;
 }
