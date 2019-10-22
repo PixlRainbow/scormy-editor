@@ -89,8 +89,8 @@ function dragstart(ev){
     
     ev.target.parentElement.addEventListener("drop",allowDrop);
     ev.target.parentElement.addEventListener("dragover",allowDrop);
-    ev.target.parentElement.addEventListener("dragenter",allowDrop);
-
+    ev.target.parentElement.addEventListener("dragover",allowDrop);
+    
     var rect = ev.target.getBoundingClientRect();
     //ev.dataTransfer.setData("text", rect.left + "," + rect.top); //cannot be read in events other than dragstart and drop because protected mode
     localStorage.setItem("rectPos",(ev.clientX - rect.left)+","+(ev.clientY - rect.top));
