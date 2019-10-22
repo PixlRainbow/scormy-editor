@@ -10,6 +10,7 @@ class SimpleElement {
     text = "";
 }
 function start_editor(){
+    var tabs = document.getElementById("horizontalTabs1");
     var workingString = window.sessionStorage.getItem("workingData");
     if(!workingString){
         window.workingData = {
@@ -19,9 +20,10 @@ function start_editor(){
         window.workingData = JSON.parse(workingString);
     }
     console.dir(window.workingData);
-    document.getElementById("horizontalTabs1").addEventListener('reorder',
+    tabs.addEventListener('reorder',
         (ev) => {console.dir(ev)}
     );
+    tabs.addEventListener("change", detect_new_slide);
     //repeated code -- TODO factorize
     var template = document.getElementById('new-slide');
     var clone = document.importNode(template.content, true);
