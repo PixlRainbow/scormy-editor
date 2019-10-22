@@ -63,10 +63,11 @@
         </template>
         <smart-tab-item label="Slide 1">
         </smart-tab-item>
+    </smart-tabs>
     <!-- <smart-button class="primary">+</smart-button> -->
     <div id="navBar" align="center">
-    <smart-button id="backBtn">Back</smart-button>
-    <smart-button id="nextBtn">Next</smart-button>
+    <smart-button id="backBtn" onclick="prevSlide()">Back</smart-button>
+    <smart-button id="nextBtn" onclick="nextSlide(this)">Next</smart-button>
     </div>
 </body>
 </html>

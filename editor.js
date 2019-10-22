@@ -78,6 +78,10 @@ function detect_new_slide(ev){
 
 function add_radio_slide(qBtn,options) {
     var str= "";
+
+    //to be shifted into general question slide 
+    str += `<qnaSlide answered=false/>`
+
     str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
     onfocusout="toolbarHide(this)">`
     str += `<form action="/action_page.php" onchange="event.stopPropagation();">
@@ -136,6 +140,7 @@ function drag(ev){
 }
 
 function toolbarAppear(div){
+    /*
     console.log("div has been focused!");
     var menu = document.getElementById("menu");
     
@@ -147,9 +152,24 @@ function toolbarAppear(div){
     menu.style.left = parseInt(menu.style.left) + 5 + "px";
     menu.style.visibility = 'visible';
     //ev.target
+    */
 }
 function toolbarHide(ev){
     /*
     var menu = document.getElementById("menu");
     menu.style.visibility = 'hidden';*/
+}
+
+function nextSlide(btn){
+    const tabs = document.querySelector('smart-tabs');
+    let selectedIndex = tabs.selectedIndex;
+    if (selectedIndex < tabs.getElementsByTagName("smart-tab-item").length -1) tabs.selectedIndex+=1;
+    btn.disabled = true;
+    if (!(tab.getElementsByTagName("qnaSlide").length && tab.getElementsByTagName("qnaSlide")[0].getAttribute("answered") == "false")) btn.disabled = false;
+}
+
+function prevSlide(){
+    const tabs = document.querySelector('smart-tabs');
+    let selectedIndex = tabs.selectedIndex;
+    if (selectedIndex > 0) tabs.selectedIndex-=1;
 }
