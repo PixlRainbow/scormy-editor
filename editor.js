@@ -74,9 +74,15 @@ function detect_new_slide(ev){
     }
 }
 function save_slides(){
-    Array.from(document.querySelectorAll("smart-tabs smart-tab-item")).forEach((elem) => {
-        //TODO: detect if slide is qn slide
-        add_slide("info", elem.firstElementChild.innerHTML);
+    Array.from(document.querySelectorAll('smart-tab-item > div.smart-container > .ql-container')).forEach((elem) => {
+        var slideContent = "";
+        //TODO: add "or" to selector query string, to handle question slides
+        if(elem.id.startsWith("editor")){
+            //the word "editor" is 6 characters long. Substr gets the number at the end.
+            var textEditor = infoEditors[elem.id.substr(6) - 1];
+            slideContent = textEditor.getContents();
+        }
+        add_slide("info", slideContent);
     });
     var blob = new Blob([JSON.stringify(window.workingData)], {type: "application/json;charset=utf-8"});
     saveAs(blob, "quiz.json");
