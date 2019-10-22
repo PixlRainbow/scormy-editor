@@ -1,5 +1,5 @@
 function open_file_dialog(){
-    document.querySelector("#content > input[type=file]").click();
+    document.querySelector("input[type=file]").click();
 }
 function load_file(ev){
     try {
