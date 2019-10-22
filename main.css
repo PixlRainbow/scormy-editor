@@ -32,12 +32,37 @@ button.file-open:hover {
 body > smart-button.primary > button {
     line-height: 2;
 } */
+smart-tabs {
+    /* height: 50vh; */
+    --smart-tabs-default-height: 80vh;
+}
 smart-tabs#horizontalTabs1 {
     width: 100%;
 }
 smart-tabs#horizontalTabs1 div.smart-tab-strip {
     width: calc(100% - 3em);
 }
+
+.optionLabel:empty::before{
+    color:lightgrey;
+    content:"Click to enter text...";
+}
+
+.draggable:focus-within{
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+}
+
+.being-dragged{
+    cursor : -moz-grabbing;
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+
+.resizeToContent{
+    display:inline-block;
+}
+
 
 @media only screen and (max-device-width: 340px) {
     section#content {
