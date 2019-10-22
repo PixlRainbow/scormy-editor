@@ -8,21 +8,53 @@
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/source/styles/smart.default.css" />
 	<link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/demos.css" />
-	<link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/quill/dist/quill.snow.css">
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/common.js"></script>
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/webcomponents-lite.js"></script>
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/source/smart.elements.js"></script>
     <script type="module" src="node_modules/file-saver/dist/FileSaver.min.js"></script>
+    <script type="text/javascript" src="node_modules/quill/dist/quill.min.js"></script>
     <script type="text/javascript" src='main.js'></script>
     <script type="text/javascript" src='editor.js'></script>
 </head>
 <body onload="start_editor()">
-    <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1" reorder close-buttons>
-		<smart-tab-item label="Slide 1">
+        <template id="new-slide">
             <smart-button class="flat">Add Question</smart-button>
-            <smart-button class="flat">Add Info Slide</smart-button>
+            <smart-button class="flat" onclick="add_info_slide(this)">Add Info Slide</smart-button>
+        </template>
+        <template id="new-info-slide">
+            <!-- Create the editor container -->
+            <div id="editor"></div>
+            
+            <!-- Initialize Quill editor -->
+            <script>
+                infoEditors.push(
+                    new Quill(`#editor${lastInfoPage++}`, {
+                        modules: {
+                            toolbar: [
+                                [{ header: [1, 2, false] }],
+                                ['bold', 'italic', 'underline'],
+                                ['image', 'code-block', 'blockquote'],
+                                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                                [{ 'color': [] }, { 'background': [] }],
+                                [{ 'font': [] }],
+                                [{ 'align': [] }],
+                                ['clean'] //'remove formatting' button
+                            ]
+                        },
+                        placeholder: 'Click here to edit text',
+                        theme: 'snow'
+                    })
+                );
+            </script> 
+        </template>
+    <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
+        reorder close-buttons add-new-tab onchange="detect_new_slide(event)">
+		<smart-tab-item label="Slide 1">
         </smart-tab-item>
     </smart-tabs>
-    <smart-button class="primary">+</smart-button>
+    <!-- <smart-button class="primary">+</smart-button> -->
 </body>
 </html>
