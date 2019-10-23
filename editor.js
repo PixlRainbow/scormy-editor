@@ -163,6 +163,29 @@ function generate_manifest(someListOfAssets){
     });
     return xmlStringPromise;
 }
+/**
+ * 
+ * @param {Array} dirStruct 
+ * @param {JSZip} zipfile
+ */
+function generate_zip(dirStruct, zipfile = null, parent = ""){
+    var curZip;
+    if(!zipfile) {
+        curZip = new JSZip();
+    }else{
+        curZip = zipfile;
+    }
+    dirStruct.forEach((entry) => {
+        if(entry.type == "dir"){
+            generate_zip(entry.content, curZip, parent+`/${entry.name}`);
+        }else{
+            curZip.file(parent+`/${entry.name}`, entry.content);
+        }
+    });
+    if(!zipfile){
+        return curZip.generateAsync({type:"blob"});
+    }
+}
 function export_SCORM(){
     //
 }
