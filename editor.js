@@ -140,3 +140,29 @@ function save_slides(){
     var blob = new Blob([JSON.stringify(window.workingData)], {type: "application/json;charset=utf-8"});
     saveAs(blob, "quiz.json");
 }
+function generate_manifest(someListOfAssets){
+    var req = new XMLHttpRequest();
+    //var manifest;
+    var xmlStringPromise = new Promise((resolve, reject) => {
+        req.onreadystatechange = () => {
+            if(req.readyState == 4 && req.status == 200){
+                let manifest = req.responseXML;
+                let resourceTag = manifest.querySelector('resource[identifier=r1]');
+                someListOfAssets.forEach((filename) => {
+                    let fileTag = manifest.createElement("file");
+                    fileTag.setAttribute("href", filename);
+                    resourceTag.appendChild(fileTag);
+                });
+                let serializer = new XMLSerializer();
+                let manifestStr = serializer.serializeToString(manifest);
+                resolve(manifestStr);
+            }
+        };
+        req.open("GET","export_assets/imsmanifest.xml", true);
+        req.send();
+    });
+    return xmlStringPromise;
+}
+function export_SCORM(){
+    //
+}
