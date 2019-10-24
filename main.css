@@ -66,7 +66,7 @@ div.ql-container {
     height:50vh;
 }
 
-smart-menu#menu {
+smart-menu#fileMenu {
     width: 100%;
     border:0;
 }
@@ -84,7 +84,13 @@ smart-menu#menu {
     visibility: hidden;
 }
 
-smart-menu{
+#menu{
     --smart-menu-default-width: 150px;
     text-align:center;
+}
+
+qnaSlide{
+    width:100%;
+    height:100%;
+    display:block;
 }

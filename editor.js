@@ -23,6 +23,7 @@ function start_editor(){
 
             for(let i = 0; i < window.workingData.slides.length; i++){
                 let thisSlide = window.workingData.slides[i];
+                console.dir(thisSlide);
                 let content = "";
                 if(thisSlide.type === "info"){
                     let template = document.getElementById('new-info-slide');
@@ -31,7 +32,13 @@ function start_editor(){
                     Array.from(clone.children).forEach((elem) => {
                         content += elem.outerHTML;
                     });
-                }else{
+                }
+                else if (thisSlide.type==="qn"){
+                    console.log("thisSlide.content")
+                    console.dir(thisSlide.content);
+                    content = thisSlide.content;
+                }
+                else{
                     content = "<p>some q shit</p>"
                 }
                 console.log(content);
@@ -41,11 +48,13 @@ function start_editor(){
                 });
                 if(thisSlide.type === "info"){
                     add_info_editor();
-                    infoEditors[i].setContents(thisSlide.content);
+                    //infoEditors[i].setContents(thisSlide.content);
+                    infoEditors[infoEditors.length - 1].setContents(thisSlide.content);
                 }
             }
         } catch (error) {
             alert(error);
+            console.dir(error);
         }
     }
     console.dir(window.workingData);
@@ -139,11 +148,12 @@ function add_question_slide(qBtn,options){
     str += `<qnaSlide answered="false"> </qnaSlide>`;
     var parentDiv = qBtn.parentElement;
     parentDiv.innerHTML = str;
-    add_radio_slide(parentDiv,options)
+    parentDiv.getElementsByTagName("qnaSlide")[0].innerHTML="<span></span>";
+    add_radio_slide(parentDiv.getElementsByTagName("qnaSlide")[0],options)
 }
 
 
-function add_radio_slide(parentDiv,options) {
+function add_radio_slide(qnaTag,options) {
     var str= "";
 
     //to be shifted into general question slide 
@@ -164,7 +174,8 @@ function add_radio_slide(parentDiv,options) {
         currOptionNum += 1;
     }while(currOptionNum < options);
     str += `</form></div>`;
-    parentDiv.innerHTML += str;
+    qnaTag.innerHTML += str;
+    //parentDiv.innerHTML += str;
     
 
 }
@@ -239,13 +250,13 @@ function toolbarAppear(div){
     
 }
 function toolbarHide(div){
-    /*
+    
     //console.log(window.getSelection());
     if (window.getSelection()){
         wrapSelectedText(div);
     }
     //console.log("form visibility");
-
+/*
     //now checked for which element is focused
     var focused = document.activeElement;
     console.log(focused);
@@ -365,15 +376,25 @@ function cleaner(el) {
     }
 
 function save_slides(){
-    Array.from(document.querySelectorAll('smart-tab-item > div.smart-container > .ql-container')).forEach((elem) => {
+    Array.from(document.querySelectorAll('smart-tab-item > div.smart-container > .ql-container,qnaSlide')).forEach((elem) => {
         var slideContent = "";
+        
         //TODO: add "or" to selector query string, to handle question slides
         if(elem.id.startsWith("editor")){
             //the word "editor" is 6 characters long. Substr gets the number at the end.
             var textEditor = infoEditors[elem.id.substr(6) - 1];
             slideContent = textEditor.getContents();
+            add_slide("info", slideContent);
         }
-        add_slide("info", slideContent);
+        else if (elem.tagName === "QNASLIDE"){
+            slideContent = elem.outerHTML;
+            add_slide("qn",slideContent);
+        }
+        else{
+            
+        console.log(elem.tagName);
+        }
+        
     });
     var blob = new Blob([JSON.stringify(window.workingData)], {type: "application/json;charset=utf-8"});
     saveAs(blob, "quiz.json");
