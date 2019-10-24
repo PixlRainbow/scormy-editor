@@ -24,7 +24,7 @@
     <smart-menu animation="simple" unfocusable> 
         <smart-menu-item shortcut="Ctrl+B"><b fontSize="14" bold>B</b></smart-menu-item>
         <smart-menu-item shortcut="Ctrl+N">
-        <input type="text" id="fontSize" size="2px" onchange="fontSizeChange(this)" value="12">
+        <input type="number" id="fontSize" width="2" onchange="fontSizeChange(this)" value="12">
         </smart-menu-item>
     </smart-menu>
     </div>
@@ -68,6 +68,7 @@
     <div id="navBar" align="center">
     <smart-button id="backBtn" onclick="prevSlide()">Back</smart-button>
     <smart-button id="nextBtn" onclick="nextSlide(this)">Next</smart-button>
+    <smart-button id="submitBtn" hidden>Submit</smart-button>
     </div>
 </body>
 </html>

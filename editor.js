@@ -145,6 +145,7 @@ function drag(ev){
 function toolbarAppear(div){
     
     //console.log("div has been focused!");
+    window.getSelection().removeAllRanges();
     var user_selection = document.querySelector('#user_selection');
     var innerSpan = document.getElementById("fontSetter");
    //user_selection.setAttribute("id","old_selection")
@@ -170,7 +171,7 @@ function toolbarAppear(div){
 }
 function toolbarHide(div){
     //console.log(window.getSelection());
-    wrapSelectedText();
+    wrapSelectedText(div);
     if (div.querySelectorAll("form :focus").length === 0 && document.getElementById("menu").querySelectorAll("smart-menu :focus").length != 0){
         var menu = document.getElementById("menu");
         if (!(menu.contains(document.activeElement))) menu.style.visibility = 'hidden';
@@ -195,7 +196,8 @@ function prevSlide(){
     let selectedIndex = tabs.selectedIndex;
     if (selectedIndex > 0) tabs.selectedIndex-=1;
     let tab = tabs.getElementsByTagName("smart-tab-item")[tabs.selectedIndex];
-    if (!(tab.getElementsByTagName("qnaSlide").length)) document.getElementById("nextBtn").disabled = false;
+    //if (!(tab.getElementsByTagName("qnaSlide").length)) 
+    document.getElementById("nextBtn").disabled = false;
 }
 
 function fontSizeChange(inputBox){
@@ -204,9 +206,10 @@ function fontSizeChange(inputBox){
     var innerSpan = document.getElementById("fontSetter");
     if (user_selection) {
         innerSpan.style.fontSize = inputBox.value + "px";
+        //check how many old spans are inside (to be removed)
         if (user_selection.querySelectorAll("span").length > 1){
-            console.log("got more than one");
-            console.dir(user_selection.querySelectorAll("span"));
+            //console.log("got more than one");
+            //console.dir(user_selection.querySelectorAll("span"));
             /*
             var selections = user_selection.querySelectorAll("span");
             for (i = 1; i < selections.length; i++){ 
@@ -215,12 +218,23 @@ function fontSizeChange(inputBox){
                 console.log(elem);
                 elem.outerHTML = elem.innerHTML;
             }*/
+            // remove/replace all inner spans that changes font size
             while(user_selection.querySelectorAll("span").length > 1){
                 var elem = user_selection.querySelectorAll("span")[1];
                 console.log(elem);
                 elem.outerHTML = elem.innerHTML;
             }
+            
         }
+        //check if parent element is another old span
+        var parent = user_selection.parentElement;
+        console.log(parent);
+        console.log(user_selection.parentElement.childElementCount);
+        console.log(user_selection.parentElement.nodeType);
+        for (let elem in parent.querySelectorAll("span")){
+            cleaner(elem);
+        }
+        if (user_selection.parentElement.childElementCount === 1 && user_selection.parentElement.tagName === "SPAN") user_selection.parentElement.outerHTML = user_selection.parentElement.innerHTML; 
         /*
         if (user_selection.getElementsByTagName('span').length){
             for (var i in user_selection.getElementsByTagName('span')){ 
@@ -232,8 +246,9 @@ function fontSizeChange(inputBox){
     }
 }
 
-function wrapSelectedText() {       
+function wrapSelectedText(parent) {       
     var selection= window.getSelection().getRangeAt(0);
+    console.log(selection.parentElement);
     var selectedText = selection.extractContents();
     var span= document.createElement("span");
     span.setAttribute("id","user_selection");
@@ -262,3 +277,9 @@ function selectText(node) {
     }
 }
 
+//clean up empty tags
+function cleaner(el) {
+        if (el.innerHTML == '&nbsp;' || el.innerHTML == '') {
+            el.parentNode.removeChild(el);
+        }
+    }
