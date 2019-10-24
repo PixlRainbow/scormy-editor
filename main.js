@@ -1,5 +1,5 @@
 function open_file_dialog(){
-    document.querySelector("#content > input[type=file]").click();
+    document.querySelector("input[type=file]").click();
 }
 function load_file(ev){
     try {
@@ -10,6 +10,7 @@ function load_file(ev){
                 //window.workingData = obj;
                 window.sessionStorage.setItem('workingData', JSON.stringify(obj))
                 alert("yay");
+                location.href = "editor.html";
             }).catch((err) => {
                 alert(err);
             });
@@ -17,6 +18,10 @@ function load_file(ev){
     } catch (error) {
         alert(error);
     }
+}
+function new_project(){
+    window.sessionStorage.removeItem("workingData");
+    location.href = "editor.html";
 }
 // function init(){
 //     try {
