@@ -173,4 +173,6 @@ function prevSlide(){
     const tabs = document.querySelector('smart-tabs');
     let selectedIndex = tabs.selectedIndex;
     if (selectedIndex > 0) tabs.selectedIndex-=1;
+    let tab = tabs.getElementsByTagName("smart-tab-item")[tabs.selectedIndex];
+    if (!(tab.getElementsByTagName("qnaSlide").length)) document.getElementById("nextBtn").disabled = false;
 }
