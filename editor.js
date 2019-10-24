@@ -84,12 +84,15 @@ function add_radio_slide(qBtn,options) {
 
     str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
     onfocusout="toolbarHide(this)">`
-    str += `<form action="/action_page.php" onchange="event.stopPropagation();">
+    str += `<form action="/action_page.php" 
+    onchange="event.stopPropagation();" 
+    ondragstart="event.stopPropagation();" 
+    ondragend="event.stopPropagation();">
     <p class="resizeToContent" contentEditable="true">Please select your gender:</p><br />`;
     console.dir(qBtn.parentElement);
     var currOptionNum = 1;
     do{
-        str += `<input type="radio" id="`+currOptionNum+`" name="radAnswer" value="Option` + currOptionNum +`"> <label class="optionLabel" contentEditable="true" placeholder="Enter something here..."`+
+        str += `<input type="radio" id="`+currOptionNum+`" name="radAnswer" value="` + currOptionNum +`"> <label class="optionLabel" contentEditable="true" placeholder="Enter something here..."`+
         `">Option` + currOptionNum + `</label><br>`
         currOptionNum += 1;
     }while(currOptionNum < options);
@@ -140,11 +143,22 @@ function drag(ev){
 }
 
 function toolbarAppear(div){
-    /*
-    console.log("div has been focused!");
+    
+    //console.log("div has been focused!");
+    var user_selection = document.querySelector('#user_selection');
+    var innerSpan = document.getElementById("fontSetter");
+   //user_selection.setAttribute("id","old_selection")
+    if(user_selection){
+        //selectText(user_selection);
+        //user_selection.removeAttribute("id");
+        innerSpan.removeAttribute("id");
+        user_selection.outerHTML = user_selection.innerHTML;
+        //selectText(user_selection);
+    }
+
     var menu = document.getElementById("menu");
     
-    console.dir(div);
+    //console.dir(div);
     menu.style.top = div.style.top;
     //console.log(menu.style.top);
     menu.style.top = parseInt(menu.style.top) - 5 + "px";
@@ -152,9 +166,16 @@ function toolbarAppear(div){
     menu.style.left = parseInt(menu.style.left) + 5 + "px";
     menu.style.visibility = 'visible';
     //ev.target
-    */
+    
 }
-function toolbarHide(ev){
+function toolbarHide(div){
+    //console.log(window.getSelection());
+    wrapSelectedText();
+    if (div.querySelectorAll("form :focus").length === 0 && document.getElementById("menu").querySelectorAll("smart-menu :focus").length != 0){
+        var menu = document.getElementById("menu");
+        if (!(menu.contains(document.activeElement))) menu.style.visibility = 'hidden';
+    }
+    
     /*
     var menu = document.getElementById("menu");
     menu.style.visibility = 'hidden';*/
@@ -176,3 +197,58 @@ function prevSlide(){
     let tab = tabs.getElementsByTagName("smart-tab-item")[tabs.selectedIndex];
     if (!(tab.getElementsByTagName("qnaSlide").length)) document.getElementById("nextBtn").disabled = false;
 }
+
+function fontSizeChange(inputBox){
+    console.log("changed");
+    var user_selection = document.getElementById("user_selection");
+    var innerSpan = document.getElementById("fontSetter");
+    if (user_selection) {
+        innerSpan.style.fontSize = inputBox.value + "px";
+        if (user_selection.querySelectorAll("span").length > 1){
+            console.log("got more than one");
+            for (var i = 1; i < user_selection.querySelectorAll("span").length; i++){ 
+                var elem = user_selection.querySelectorAll("span")[i];
+                elem.outerHTML = elem.innerHTML;
+            }
+        }
+        /*
+        if (user_selection.getElementsByTagName('span').length){
+            for (var i in user_selection.getElementsByTagName('span')){ 
+                user_selection.outerHTML += i;
+                user_selection.remove(i);
+            }
+        }
+        */
+    }
+}
+
+function wrapSelectedText() {       
+    var selection= window.getSelection().getRangeAt(0);
+    var selectedText = selection.extractContents();
+    var span= document.createElement("span");
+    span.setAttribute("id","user_selection");
+    span.style.backgroundColor = "grey";
+    var innerSpan = document.createElement("span");
+    innerSpan.id = "fontSetter";
+    innerSpan.appendChild(selectedText);
+    span.appendChild(innerSpan);
+    selection.insertNode(span);
+}
+
+function selectText(node) {
+
+    if (document.body.createTextRange) {
+        const range = document.body.createTextRange();
+        range.moveToElementText(node);
+        range.select();
+    } else if (window.getSelection) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    } else {
+        console.warn("Could not select text in node: Unsupported browser.");
+    }
+}
+
