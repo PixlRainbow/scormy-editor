@@ -80,7 +80,7 @@ function add_radio_slide(qBtn,options) {
     var str= "";
 
     //to be shifted into general question slide 
-    str += `<qnaSlide answered="false"/>`
+    str += `<qnaSlide answered="false"> </qnaSlide>`
 
     str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
     onfocusout="toolbarHide(this)">`
