@@ -206,8 +206,18 @@ function fontSizeChange(inputBox){
         innerSpan.style.fontSize = inputBox.value + "px";
         if (user_selection.querySelectorAll("span").length > 1){
             console.log("got more than one");
-            for (var i = 1; i < user_selection.querySelectorAll("span").length; i++){ 
-                var elem = user_selection.querySelectorAll("span")[i];
+            console.dir(user_selection.querySelectorAll("span"));
+            /*
+            var selections = user_selection.querySelectorAll("span");
+            for (i = 1; i < selections.length; i++){ 
+                var elem = selections[i];
+                console.log(i);
+                console.log(elem);
+                elem.outerHTML = elem.innerHTML;
+            }*/
+            while(user_selection.querySelectorAll("span").length > 1){
+                var elem = user_selection.querySelectorAll("span")[1];
+                console.log(elem);
                 elem.outerHTML = elem.innerHTML;
             }
         }
