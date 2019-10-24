@@ -76,20 +76,33 @@ function detect_new_slide(ev){
 
 }
 
-function add_radio_slide(qBtn,options) {
+
+//Todo: change parameters to query user instead
+function add_question_slide(qBtn,options){
     var str= "";
 
     //to be shifted into general question slide 
-    str += `<qnaSlide answered="false"> </qnaSlide>`
+    str += `<qnaSlide answered="false"> </qnaSlide>`;
+    var parentDiv = qBtn.parentElement;
+    parentDiv.innerHTML = str;
+    add_radio_slide(parentDiv,options)
+}
 
-    str += `<div class="draggable focus resizeToContent" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
+
+function add_radio_slide(parentDiv,options) {
+    var str= "";
+
+    //to be shifted into general question slide 
+    //str += `<qnaSlide answered="false"> </qnaSlide>`
+
+    str += `<div class="draggable focus resizeToContent question" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
     onfocusout="toolbarHide(this)">`
     str += `<form action="/action_page.php" 
     onchange="event.stopPropagation();" 
     ondragstart="event.stopPropagation();" 
     ondragend="event.stopPropagation();">
     <p class="resizeToContent" contentEditable="true">Please select your gender:</p><br />`;
-    console.dir(qBtn.parentElement);
+    //console.dir(parentDiv);
     var currOptionNum = 1;
     do{
         str += `<input type="radio" id="`+currOptionNum+`" name="radAnswer" value="` + currOptionNum +`"> <label class="optionLabel" contentEditable="true" placeholder="Enter something here..."`+
@@ -97,7 +110,7 @@ function add_radio_slide(qBtn,options) {
         currOptionNum += 1;
     }while(currOptionNum < options);
     str += `</form></div>`;
-    qBtn.parentElement.innerHTML = str;
+    parentDiv.innerHTML += str;
     
 
 }
@@ -144,6 +157,8 @@ function drag(ev){
 
 function toolbarAppear(div){
     
+    //var docActive = document.activeElement;
+    //console.log(docActive);
     //console.log("div has been focused!");
     window.getSelection().removeAllRanges();
     var user_selection = document.querySelector('#user_selection');
@@ -170,9 +185,20 @@ function toolbarAppear(div){
     
 }
 function toolbarHide(div){
+    /*
     //console.log(window.getSelection());
-    wrapSelectedText(div);
-    if (div.querySelectorAll("form :focus").length === 0 && document.getElementById("menu").querySelectorAll("smart-menu :focus").length != 0){
+    if (window.getSelection()){
+        wrapSelectedText(div);
+    }
+    //console.log("form visibility");
+
+    //now checked for which element is focused
+    var focused = document.activeElement;
+    console.log(focused);
+    //console.log(docActive);
+    //console.log(div.querySelectorAll("form :focus").length === 0);
+    //console.log(document.getElementById("menu").querySelectorAll("smart-menu :focus").length);
+    if ((!focused || focused == document.body)){
         var menu = document.getElementById("menu");
         if (!(menu.contains(document.activeElement))) menu.style.visibility = 'hidden';
     }
@@ -201,7 +227,7 @@ function prevSlide(){
 }
 
 function fontSizeChange(inputBox){
-    console.log("changed");
+    //console.log("changed");
     var user_selection = document.getElementById("user_selection");
     var innerSpan = document.getElementById("fontSetter");
     if (user_selection) {
@@ -221,16 +247,16 @@ function fontSizeChange(inputBox){
             // remove/replace all inner spans that changes font size
             while(user_selection.querySelectorAll("span").length > 1){
                 var elem = user_selection.querySelectorAll("span")[1];
-                console.log(elem);
+                //console.log(elem);
                 elem.outerHTML = elem.innerHTML;
             }
             
         }
         //check if parent element is another old span
         var parent = user_selection.parentElement;
-        console.log(parent);
-        console.log(user_selection.parentElement.childElementCount);
-        console.log(user_selection.parentElement.nodeType);
+        //console.console.log(parent);
+        //console.log(user_selection.parentElement.childElementCount);
+        //console.log(user_selection.parentElement.nodeType);
         for (let elem in parent.querySelectorAll("span")){
             cleaner(elem);
         }
@@ -283,3 +309,4 @@ function cleaner(el) {
             el.parentNode.removeChild(el);
         }
     }
+
