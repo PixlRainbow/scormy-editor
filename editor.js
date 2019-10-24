@@ -70,5 +70,13 @@ function detect_new_slide(ev){
         Array.from(clone.children).forEach((btn) => {
             select_slide(ev.detail.index).content += btn.outerHTML;
         });
+        //TODO: switch ev.detail.index to index after merge
+        document.querySelector(`div.smart-tab-label-container:nth-child(${ev.detail.index+1})`)
+            .addEventListener("dblclick", (clkEv) => {
+                let oldName = select_slide(ev.detail.index).label;
+                let newName = prompt("New Slide Name", oldName) || oldName;
+                //elem.textContent = newName;
+                document.getElementById("horizontalTabs1").update(ev.detail.index, newName);
+            });
     }
 }
