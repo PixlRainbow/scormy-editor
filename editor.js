@@ -36,7 +36,7 @@ function start_editor(){
                 }
                 console.log(content);
                 tabs.insert(i, {
-                    "label": `Slide ${i + 1}`,
+                    "label": thisSlide.name,
                     "content": content
                 });
                 if(thisSlide.type === "info"){
@@ -64,13 +64,15 @@ function select_slide(i){
 /**
  * 
  * @param {string} t qn or info
+ * @param {string} slideName slide name, shows up in tab label
  * @param {[SimpleElement]} c HTML content of slide
  * @param {number} formid index of form in document. Null if not a question.
  * @param {[number]} correctAnswer index position for correct answer. More than one value if checkbox. Empty if not a question.
  */
-function add_slide(t, c = [], formid = null, correctAnswer = []){
+function add_slide(t, slideName, c = [], formid = null, correctAnswer = []){
     var slide = {
         type: t,
+        name: slideName,
         formIndex: formid,
         content: c,
         answer: correctAnswer
@@ -135,7 +137,7 @@ function save_slides(){
             var textEditor = infoEditors[elem.id.substr(6) - 1];
             slideContent = textEditor.getContents();
         }
-        add_slide("info", slideContent);
+        add_slide("info", elem.closest("smart-tab-item").label, slideContent);
     });
     var blob = new Blob([JSON.stringify(window.workingData)], {type: "application/json;charset=utf-8"});
     saveAs(blob, "quiz.json");
