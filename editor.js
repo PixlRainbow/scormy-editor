@@ -10,18 +10,49 @@ class SimpleElement {
     text = "";
 }
 function start_editor(){
+    var tabs = document.getElementById("horizontalTabs1");
     var workingString = window.sessionStorage.getItem("workingData");
     if(!workingString){
         window.workingData = {
             slides: []
         };
     }else{
-        window.workingData = JSON.parse(workingString);
+        try {
+            tabs.remove(0);
+            window.workingData = JSON.parse(workingString);
+
+            for(let i = 0; i < window.workingData.slides.length; i++){
+                let thisSlide = window.workingData.slides[i];
+                let content = "";
+                if(thisSlide.type === "info"){
+                    let template = document.getElementById('new-info-slide');
+                    let clone = document.importNode(template.content, true);
+                    clone.firstElementChild.id += lastInfoPage.toString();
+                    Array.from(clone.children).forEach((elem) => {
+                        content += elem.outerHTML;
+                    });
+                }else{
+                    content = "<p>some q shit</p>"
+                }
+                console.log(content);
+                tabs.insert(i, {
+                    "label": `Slide ${i + 1}`,
+                    "content": content
+                });
+                if(thisSlide.type === "info"){
+                    add_info_editor();
+                    infoEditors[i].setContents(thisSlide.content);
+                }
+            }
+        } catch (error) {
+            alert(error);
+        }
     }
     console.dir(window.workingData);
-    document.getElementById("horizontalTabs1").addEventListener('reorder',
+    tabs.addEventListener('reorder',
         (ev) => {console.dir(ev)}
     );
+    tabs.addEventListener("change", detect_new_slide);
     //repeated code -- TODO factorize
     var template = document.getElementById('new-slide');
     var clone = document.importNode(template.content, true);
@@ -61,22 +92,107 @@ function add_info_slide(infoBtn) {
     infoBox.innerHTML = "";
     infoBox.appendChild(clone);
     infoBox.style.padding = "0";
+    add_info_editor();
+}
+function add_info_editor(){
+    infoEditors.push(
+        new Quill(`#editor${lastInfoPage++}`, {
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block', 'blockquote'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'font': [] }],
+                    [{ 'align': [] }],
+                    ['clean'] //'remove formatting' button
+                ]
+            },
+            placeholder: 'Click here to edit text',
+            theme: 'snow'
+        })
+    );
 }
 function detect_new_slide(ev){
     var template = document.getElementById('new-slide');
     var clone = document.importNode(template.content, true);
-    if(!select_slide(ev.detail.index).content){
+    var index = ev.detail.index;
+    if(!select_slide(index).content){
         console.dir(clone);
         Array.from(clone.children).forEach((btn) => {
-            select_slide(ev.detail.index).content += btn.outerHTML;
+            select_slide(index).content += btn.outerHTML;
         });
-        //TODO: switch ev.detail.index to index after merge
-        document.querySelector(`div.smart-tab-label-container:nth-child(${ev.detail.index+1})`)
+        document.querySelector(`div.smart-tab-label-container:nth-child(${index})`)
             .addEventListener("dblclick", (clkEv) => {
-                let oldName = select_slide(ev.detail.index).label;
+                let oldName = select_slide(index).label;
                 let newName = prompt("New Slide Name", oldName) || oldName;
                 //elem.textContent = newName;
-                document.getElementById("horizontalTabs1").update(ev.detail.index, newName);
+                document.getElementById("horizontalTabs1").update(index, newName);
             });
     }
+}
+function save_slides(){
+    Array.from(document.querySelectorAll('smart-tab-item > div.smart-container > .ql-container')).forEach((elem) => {
+        var slideContent = "";
+        //TODO: add "or" to selector query string, to handle question slides
+        if(elem.id.startsWith("editor")){
+            //the word "editor" is 6 characters long. Substr gets the number at the end.
+            var textEditor = infoEditors[elem.id.substr(6) - 1];
+            slideContent = textEditor.getContents();
+        }
+        add_slide("info", slideContent);
+    });
+    var blob = new Blob([JSON.stringify(window.workingData)], {type: "application/json;charset=utf-8"});
+    saveAs(blob, "quiz.json");
+}
+function generate_manifest(someListOfAssets){
+    var req = new XMLHttpRequest();
+    //var manifest;
+    var xmlStringPromise = new Promise((resolve, reject) => {
+        req.onreadystatechange = () => {
+            if(req.readyState == 4 && req.status == 200){
+                let manifest = req.responseXML;
+                let resourceTag = manifest.querySelector('resource[identifier=r1]');
+                someListOfAssets.forEach((filename) => {
+                    let fileTag = manifest.createElement("file");
+                    fileTag.setAttribute("href", filename);
+                    resourceTag.appendChild(fileTag);
+                });
+                let serializer = new XMLSerializer();
+                let manifestStr = serializer.serializeToString(manifest);
+                resolve(manifestStr);
+            }
+        };
+        req.open("GET","export_assets/imsmanifest.xml", true);
+        req.send();
+    });
+    return xmlStringPromise;
+}
+/**
+ * 
+ * @param {Array} dirStruct 
+ * @param {JSZip} zipfile
+ */
+function generate_zip(dirStruct, zipfile = null, parent = ""){
+    var curZip;
+    if(!zipfile) {
+        curZip = new JSZip();
+    }else{
+        curZip = zipfile;
+    }
+    dirStruct.forEach((entry) => {
+        if(entry.type == "dir"){
+            generate_zip(entry.content, curZip, parent+`/${entry.name}`);
+        }else{
+            curZip.file(parent+`/${entry.name}`, entry.content);
+        }
+    });
+    if(!zipfile){
+        return curZip.generateAsync({type:"blob"});
+    }
+}
+function export_SCORM(){
+    //
 }

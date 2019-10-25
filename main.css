@@ -47,6 +47,11 @@ div.ql-container {
     height:50vh;
 }
 
+smart-menu#menu {
+    width: 100%;
+    border:0;
+}
+
 @media only screen and (max-device-width: 340px) {
     section#content {
         flex-flow: column;
