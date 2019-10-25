@@ -154,6 +154,10 @@ function detect_new_slide(ev){
     }
 }
 function save_slides(){
+    var blob = new Blob([generate_json()], {type: "application/json;charset=utf-8"});
+    saveAs(blob, "quiz.json");
+}
+function generate_json(){
     Array.from(document.querySelectorAll('textarea.info_editor')).forEach((elem) => {
         var slideContent = "";
         //TODO: add "or" to selector query string, to handle question slides
@@ -165,8 +169,7 @@ function save_slides(){
         }
         add_slide("info", elem.closest("smart-tab-item").label, slideContent);
     });
-    var blob = new Blob([JSON.stringify(window.workingData)], {type: "application/json;charset=utf-8"});
-    saveAs(blob, "quiz.json");
+    return JSON.stringify(window.workingData);
 }
 function generate_manifest(someListOfAssets){
     var req = new XMLHttpRequest();
