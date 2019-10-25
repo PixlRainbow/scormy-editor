@@ -1,14 +1,14 @@
 var lastInfoPage = 1;
 var infoEditors = [];
 
-class SimpleElement {
-    tagName = "";
-    id = "";
-    classes = "";
-    /** @type {[SimpleElement]} children*/
-    children = [];
-    text = "";
-}
+// class SimpleElement {
+//     tagName = "";
+//     id = "";
+//     classes = "";
+//     /** @type {[SimpleElement]} children*/
+//     children = [];
+//     text = "";
+// }
 function start_editor(){
     let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if(isMobile)
@@ -82,7 +82,7 @@ function select_slide(i){
  * 
  * @param {string} t qn or info
  * @param {string} slideName slide name, shows up in tab label
- * @param {[SimpleElement]} c HTML content of slide
+ * @param {[Object]} c HTML content of slide
  * @param {number} formid index of form in document. Null if not a question.
  * @param {[number]} correctAnswer index position for correct answer. More than one value if checkbox. Empty if not a question.
  */
