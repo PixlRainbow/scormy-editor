@@ -162,9 +162,11 @@ function add_radio_slide(qnaTag,options) {
     str += `<div class="draggable focus resizeToContent question" draggable="true" ondragstart="dragstart(event)" ondragend="drag(event)" onfocusin="toolbarAppear(this)"
     onfocusout="toolbarHide(this)">`
     str += `<form action="/action_page.php" 
+    class="radioForm"
     onchange="event.stopPropagation();" 
     ondragstart="event.stopPropagation();" 
-    ondragend="event.stopPropagation();">
+    ondragend="event.stopPropagation();"
+    onmousedown="getFontSize()" onmouseup="getFontSize()" onkeydown="getFontSize()">
     <p class="resizeToContent" contentEditable="true">Please select your gender:</p><br />`;
     //console.dir(parentDiv);
     var currOptionNum = 1;
@@ -338,7 +340,10 @@ function fontSizeChange(inputBox){
 }
 
 function wrapSelectedText(parent) {       
+    try{
     var selection= window.getSelection().getRangeAt(0);
+    }
+    catch{return 0;}
     console.log(selection.parentElement);
     var selectedText = selection.extractContents();
     var span= document.createElement("span");
@@ -374,6 +379,52 @@ function cleaner(el) {
             el.parentNode.removeChild(el);
         }
     }
+
+function getFontSize(){
+    //onsole.dir(elem);
+    //font size input box
+    var fontSizeInput = document.getElementById("fontSize");
+    //if (elem.selectionStart){
+        //means user highlighted something
+        //if (this.selectionStart != this.selectionEnd){
+            //get selection, then get font size of selected text
+    const selection = window.getSelection();
+    console.log("selection: "+selection.toString())
+    if (selection) { 
+        try{
+            const size = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
+            console.log(size);
+            fontSizeInput.value = size.replace("px","");
+        }
+        catch{
+            console.log("No text selected.")
+        }
+    }
+
+    //}
+}
+
+function onSubmit(){
+    var smartTabs = document.getElementById("horizontalTabs1");
+    var selectedIndex = smartTabs.getAttribute("selected-index");
+    var currTab = smartTabs.querySelector('smart-tab-item[index="'+selectedIndex+'"]');
+    var forms = currTab.getElementsByTagName("form");
+    if (forms){
+        console.dir(forms);
+        for (const i of forms){
+            console.dir(i)
+            if (i.classList.contains("radioForm")){
+                for (const b of i.querySelectorAll("input"))
+                    if (b.checked){
+                        console.log("b checked")
+                        i.setAttribute("answer",btoa(btoa(btoa(b.value))));
+                        console.log(i.getAttribute("answer"))
+                    }
+            }
+        }
+        alert("Answers in current slide saved");
+    }
+}
 
 function save_slides(){
     Array.from(document.querySelectorAll('smart-tab-item > div.smart-container > .ql-container,qnaSlide')).forEach((elem) => {
