@@ -1,11 +1,11 @@
-class SimpleElement {
-    tagName = "";
-    id = "";
-    classes = "";
-    /** @type {[SimpleElement]} children*/
-    children = [];
-    text = "";
-}
+// class SimpleElement {
+//     tagName = "";
+//     id = "";
+//     classes = "";
+//     /** @type {[SimpleElement]} children*/
+//     children = [];
+//     text = "";
+// }
 function start_editor(){
     var workingString = window.sessionStorage.getItem("workingData");
     if(!workingString){
@@ -20,7 +20,7 @@ function start_editor(){
 /**
  * 
  * @param {string} t qn or info
- * @param {[SimpleElement]} c HTML content of slide
+ * @param {[Object]} c HTML content of slide
  * @param {number} formid index of form in document. Null if not a question.
  * @param {[number]} correctAnswer index position for correct answer. More than one value if checkbox. Empty if not a question.
  */
