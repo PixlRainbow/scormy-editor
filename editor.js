@@ -54,7 +54,7 @@ function start_editor(){
                 }
                 console.log(content);
                 tabs.insert(i, {
-                    "label": `Slide ${i + 1}`,
+                    "label": thisSlide.name,
                     "content": content
                 });
                 enable_rename(i);
@@ -81,13 +81,15 @@ function select_slide(i){
 /**
  * 
  * @param {string} t qn or info
+ * @param {string} slideName slide name, shows up in tab label
  * @param {[SimpleElement]} c HTML content of slide
  * @param {number} formid index of form in document. Null if not a question.
  * @param {[number]} correctAnswer index position for correct answer. More than one value if checkbox. Empty if not a question.
  */
-function add_slide(t, c = [], formid = null, correctAnswer = []){
+function add_slide(t, slideName, c = [], formid = null, correctAnswer = []){
     var slide = {
         type: t,
+        name: slideName,
         formIndex: formid,
         content: c,
         answer: correctAnswer
@@ -457,11 +459,11 @@ function save_slides(){
             //the word "editor" is 6 characters long. Substr gets the number at the end.
             var textEditor = infoEditors[elem.id.substr(6) - 1];
             slideContent = textEditor.getData();
-            add_slide("info", slideContent);
+            add_slide("info", elem.closest("smart-tab-item").label, slideContent);
         }
         else if (elem.tagName === "QNASLIDE"){
             slideContent = elem.outerHTML;
-            add_slide("qn",slideContent);
+            add_slide("qn",elem.closest("smart-tab-item").label,slideContent);
         }
         else{
             
