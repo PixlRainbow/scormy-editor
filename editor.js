@@ -20,6 +20,7 @@ function start_editor(){
         var template = document.getElementById('new-slide');
         var clone = document.importNode(template.content, true);
         select_slide(0).appendChild(clone);
+        enable_rename(0);
     }else{
         try {
             tabs.remove(0);
@@ -43,13 +44,7 @@ function start_editor(){
                     "label": `Slide ${i + 1}`,
                     "content": content
                 });
-                document.querySelector(`div.smart-tab-label-container:nth-child(${i+1})`)
-                    .addEventListener("dblclick", (clkEv) => {
-                        let oldName = select_slide(i).label;
-                        let newName = prompt("New Slide Name", oldName) || oldName;
-                        //elem.textContent = newName;
-                        document.getElementById("horizontalTabs1").update(i, newName);
-                    });
+                enable_rename(i);
                 if(thisSlide.type === "info"){
                     add_info_editor();
                     //infoEditors[i].setContents(thisSlide.content);
@@ -125,6 +120,19 @@ function add_info_editor(){
     //     })
     // );
 }
+/**
+ * adds double click event listener to tab label for rename prompt
+ * @param {number} slide_index starts from zero not one
+ */
+function enable_rename(slide_index) {
+    document.querySelector(`div.smart-tab-label-container:nth-child(${slide_index+1})`)
+        .addEventListener("dblclick", (clkEv) => {
+            let oldName = select_slide(slide_index).label;
+            let newName = prompt("New Slide Name", oldName) || oldName;
+            //elem.textContent = newName;
+            document.getElementById("horizontalTabs1").update(slide_index, newName);
+        });
+}
 function detect_new_slide(ev){
     var template = document.getElementById('new-slide');
     var clone = document.importNode(template.content, true);
@@ -134,13 +142,7 @@ function detect_new_slide(ev){
         Array.from(clone.children).forEach((btn) => {
             select_slide(index).content += btn.outerHTML;
         });
-        document.querySelector(`div.smart-tab-label-container:nth-child(${index})`)
-            .addEventListener("dblclick", (clkEv) => {
-                let oldName = select_slide(index).label;
-                let newName = prompt("New Slide Name", oldName) || oldName;
-                //elem.textContent = newName;
-                document.getElementById("horizontalTabs1").update(index, newName);
-            });
+        enable_rename(index);
     }
 }
 function save_slides(){
