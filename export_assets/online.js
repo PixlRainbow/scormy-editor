@@ -3,7 +3,7 @@ function start_viewer(){
 
     fetch("quiz.json")
         .then(function(res){
-            if(res.status != 200){
+            if(res.status === 200){
                 return res.json();
             }
             else{
@@ -13,9 +13,9 @@ function start_viewer(){
             }
         })
         .then(function(workingData){
-            for(let i = 0; i < workingData.length; i++){
+            for(let i = 0; i < workingData.slides.length; i++){
                 let thisSlide = workingData.slides[i];
-                console.log(content);
+                console.log(thisSlide.content);
                 tabs.insert(i, {
                     "label": thisSlide.name,
                     "content": thisSlide.content

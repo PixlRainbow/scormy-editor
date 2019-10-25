@@ -231,6 +231,11 @@ function export_SCORM(){
         },
         {
             type: "file",
+            name: "main.css",
+            content: ""
+        },
+        {
+            type: "file",
             name: "quiz.json",
             content: ""
         },
@@ -256,8 +261,15 @@ function export_SCORM(){
             })
     );
     tasks.push(
+        fetch("main.css")
+            .then(res => res.text())
+            .then(html => {
+                dirStruct[2].content = html;
+            })
+    );
+    tasks.push(
         new Promise((resolve, reject) => {
-            dirStruct[2].content = generate_json();
+            dirStruct[3].content = generate_json();
             resolve();
         })
     );
@@ -273,7 +285,7 @@ function export_SCORM(){
             "node_modules/@smarthtmlelements/smart-elements-community/scripts/webcomponents-lite.js",
             "node_modules/@smarthtmlelements/smart-elements-community/source/smart.elements.js"
         ]).then(manifestXML => {
-            dirStruct[3].content = manifestXML;
+            dirStruct[4].content = manifestXML;
         })
     );
     Promise
