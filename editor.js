@@ -562,8 +562,9 @@ function export_SCORM(){
     tasks.push(
         fetch("export_assets/online.js")
             .then(res => res.text())
-            .then(html => {
-                dirStruct[1].content = html;
+            .then(js => {
+                let babelfied = Babel.transform(js, { presets: ['es2015'] }).code;
+                dirStruct[1].content = babelfied;
             })
     );
     tasks.push(
