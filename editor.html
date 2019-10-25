@@ -9,13 +9,14 @@
     <link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/source/styles/smart.default.css" />
 	<link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/demos.css" />
     <link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/common.css" />
-    <link rel="stylesheet" type="text/css" href="node_modules/quill/dist/quill.snow.css">
+    <!-- <link rel="stylesheet" type="text/css" href="node_modules/quill/dist/quill.snow.css"> -->
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/common.js"></script>
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/webcomponents-lite.js"></script>
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/source/smart.elements.js"></script>
     <script type="module" src="node_modules/file-saver/dist/FileSaver.min.js"></script>
     <script type="text/javascript" src="node_modules/jszip/dist/jszip.min.js"></script>
-    <script type="text/javascript" src="node_modules/quill/dist/quill.min.js"></script>
+    <!-- <script type="text/javascript" src="node_modules/quill/dist/quill.min.js"></script> -->
+    <script type="text/javascript" src="node_modules/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src='main.js'></script>
     <script type="text/javascript" src='editor.js'></script>
 </head>
@@ -34,7 +35,10 @@
     </template>
     <template id="new-info-slide">
         <!-- Create the editor container -->
-        <div id="editor"></div>
+        <!-- <div id="editor"></div> -->
+        <textarea name="editor" id="editor" class="info_editor" rows="10" cols="80">
+            This is my textarea to be replaced with CKEditor.
+        </textarea>
     </template>
     <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
         reorder close-buttons add-new-tab>

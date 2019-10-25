@@ -39,9 +39,17 @@ function start_editor(){
                     "label": `Slide ${i + 1}`,
                     "content": content
                 });
+                document.querySelector(`div.smart-tab-label-container:nth-child(${i+1})`)
+                    .addEventListener("dblclick", (clkEv) => {
+                        let oldName = select_slide(i).label;
+                        let newName = prompt("New Slide Name", oldName) || oldName;
+                        //elem.textContent = newName;
+                        document.getElementById("horizontalTabs1").update(i, newName);
+                    });
                 if(thisSlide.type === "info"){
                     add_info_editor();
-                    infoEditors[i].setContents(thisSlide.content);
+                    //infoEditors[i].setContents(thisSlide.content);
+                    infoEditors[i].setData(thisSlide.content);
                 }
             }
         } catch (error) {
@@ -88,6 +96,7 @@ function add_info_slide(infoBtn) {
     var template = document.getElementById('new-info-slide');
     var clone = document.importNode(template.content, true);
     clone.firstElementChild.id += lastInfoPage.toString();
+    clone.firstElementChild.name += lastInfoPage.toString();
     var infoBox = infoBtn.parentElement;
     infoBox.innerHTML = "";
     infoBox.appendChild(clone);
@@ -95,25 +104,26 @@ function add_info_slide(infoBtn) {
     add_info_editor();
 }
 function add_info_editor(){
-    infoEditors.push(
-        new Quill(`#editor${lastInfoPage++}`, {
-            modules: {
-                toolbar: [
-                    [{ header: [1, 2, false] }],
-                    ['bold', 'italic', 'underline'],
-                    ['image', 'code-block', 'blockquote'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'font': [] }],
-                    [{ 'align': [] }],
-                    ['clean'] //'remove formatting' button
-                ]
-            },
-            placeholder: 'Click here to edit text',
-            theme: 'snow'
-        })
-    );
+    infoEditors.push(CKEDITOR.replace(`editor${lastInfoPage++}`));
+    // infoEditors.push(
+    //     new Quill(`#editor${lastInfoPage++}`, {
+    //         modules: {
+    //             toolbar: [
+    //                 [{ header: [1, 2, false] }],
+    //                 ['bold', 'italic', 'underline'],
+    //                 ['image', 'code-block', 'blockquote'],
+    //                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    //                 [{ 'indent': '-1'}, { 'indent': '+1' }],
+    //                 [{ 'color': [] }, { 'background': [] }],
+    //                 [{ 'font': [] }],
+    //                 [{ 'align': [] }],
+    //                 ['clean'] //'remove formatting' button
+    //             ]
+    //         },
+    //         placeholder: 'Click here to edit text',
+    //         theme: 'snow'
+    //     })
+    // );
 }
 function detect_new_slide(ev){
     var template = document.getElementById('new-slide');
@@ -134,13 +144,14 @@ function detect_new_slide(ev){
     }
 }
 function save_slides(){
-    Array.from(document.querySelectorAll('smart-tab-item > div.smart-container > .ql-container')).forEach((elem) => {
+    Array.from(document.querySelectorAll('textarea.info_editor')).forEach((elem) => {
         var slideContent = "";
         //TODO: add "or" to selector query string, to handle question slides
         if(elem.id.startsWith("editor")){
             //the word "editor" is 6 characters long. Substr gets the number at the end.
             var textEditor = infoEditors[elem.id.substr(6) - 1];
-            slideContent = textEditor.getContents();
+            //slideContent = textEditor.getContents();
+            slideContent = textEditor.getData();
         }
         add_slide("info", slideContent);
     });
