@@ -49,9 +49,11 @@ function strip_question(doc){
 function nextSlide(btn){
     const tabs = document.querySelector('smart-tabs');
     let selectedIndex = tabs.selectedIndex;
+    let tab = tabs.getElementsByTagName("smart-tab-item")[tabs.selectedIndex];
+    if ((tab.getElementsByTagName("qnaSlide").length && tab.getElementsByTagName("qnaSlide")[0].getAttribute("answered") == "false")) return;
     if (selectedIndex < tabs.getElementsByTagName("smart-tab-item").length -1) tabs.selectedIndex+=1;
     btn.disabled = true;
-    let tab = tabs.getElementsByTagName("smart-tab-item")[tabs.selectedIndex];
+    tab = tabs.getElementsByTagName("smart-tab-item")[tabs.selectedIndex];
     if (!(tab.getElementsByTagName("qnaSlide").length && tab.getElementsByTagName("qnaSlide")[0].getAttribute("answered") == "false")) btn.disabled = false;
 }
 
