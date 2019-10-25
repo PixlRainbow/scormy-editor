@@ -13,6 +13,7 @@
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/common.js"></script>
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/webcomponents-lite.js"></script>
     <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/source/smart.elements.js"></script>
+    <script type="text/javascript" src="scorm_api.js"></script>
     <script type="module" src="node_modules/file-saver/dist/FileSaver.min.js"></script>
     <script type="text/javascript" src="node_modules/jszip/dist/jszip.min.js"></script>
     <script type="text/javascript" src="node_modules/jszip-utils/dist/jszip-utils.min.js"></script>
@@ -20,10 +21,20 @@
     <script type="text/javascript" src="node_modules/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src='main.js'></script>
     <script type="text/javascript" src='editor.js'></script>
+    <script type="text/javascript" src="editor_api.js"></script>
 </head>
 <body onload="start_editor()">
+    <div id="menu">
+    <smart-menu animation="simple" unfocusable> 
+        <smart-menu-item shortcut="Ctrl+B"><b fontSize="14" bold>B</b></smart-menu-item>
+        <smart-menu-item shortcut="Ctrl+N">
+        <input type="number" id="fontSize" width="2" onchange="fontSizeChange(this)" value="12">
+        </smart-menu-item>
+    </smart-menu>
+    </div>
+
     <input type="file" hidden accept="application/json" oninput="load_file(event)">
-    <smart-menu id="menu">
+    <smart-menu id="fileMenu">
         <smart-menu-item onclick="new_project()">New</smart-menu-item>
         <smart-menu-item onclick="open_file_dialog()">Open</smart-menu-item>
         <smart-menu-item onclick="save_slides()">Save As...</smart-menu-item>
@@ -31,8 +42,8 @@
         <smart-menu-item disabled>Exit</smart-menu-item>
     </smart-menu>
     <template id="new-slide">
-        <smart-button class="flat">Add Question</smart-button>
-        <smart-button class="flat" onclick="add_info_slide(this)">Add Info Slide</smart-button>
+        <smart-button class="flat" onclick="add_question_slide(this,4)">Add Question</smart-button>
+        <smart-button class="flat" onclick="add_info_slide(this)">Add Info Slide</smart-button>>
     </template>
     <template id="new-info-slide">
         <!-- Create the editor container -->
@@ -44,8 +55,13 @@
     <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1"
         reorder close-buttons add-new-tab>
 		<smart-tab-item label="Slide 1">
-        </smart-tab-item>
+
     </smart-tabs>
     <!-- <smart-button class="primary">+</smart-button> -->
+    <div id="navBar" align="center">
+    <smart-button id="backBtn" onclick="prevSlide()">Back</smart-button>
+    <smart-button id="nextBtn" onclick="nextSlide(this)">Next</smart-button>
+    <smart-button id="submitBtn" onclick="onSubmit()">Submit</smart-button>
+    </div>
 </body>
 </html>
