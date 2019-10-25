@@ -10,6 +10,12 @@ class SimpleElement {
     text = "";
 }
 function start_editor(){
+    let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if(isMobile)
+        CKEDITOR.config.height = "calc(50vh - 6em)";
+    else
+        CKEDITOR.config.height = "calc(50vh - 3em)";
+
     var tabs = document.getElementById("horizontalTabs1");
     var workingString = window.sessionStorage.getItem("workingData");
     if(!workingString){
