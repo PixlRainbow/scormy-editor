@@ -523,3 +523,26 @@ function generate_zip(dirStruct, zipfile = null, parent = ""){
 function export_SCORM(){
     //
 }
+
+/**
+ * 
+ * @param {document} doc 
+ */
+function strip_question(doc){
+    for (const d of doc.getElementsByClassName("draggable")){
+        d.removeAttribute("draggable");
+        d.removeAttribute("ondragstart");
+        d.removeAttribute("ondragend");
+        d.removeAttribute("onfocusin");
+        d.removeAttribute("onfocusout");
+
+    }
+    for (const i of doc.forms){
+        i.removeAttribute("onmousedown");
+        i.removeAttribute("onmouseup");
+        i.removeAttribute("onkeydown");
+    }
+    while (doc.querySelector("[contentEditable='true']")){
+        doc.querySelector("[contentEditable='true']").removeAttribute("contentEditable");
+    }
+}
