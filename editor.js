@@ -16,6 +16,10 @@ function start_editor(){
         window.workingData = {
             slides: []
         };
+        //repeated code -- TODO factorize
+        var template = document.getElementById('new-slide');
+        var clone = document.importNode(template.content, true);
+        select_slide(0).appendChild(clone);
     }else{
         try {
             tabs.remove(0);
@@ -61,10 +65,6 @@ function start_editor(){
         (ev) => {console.dir(ev)}
     );
     tabs.addEventListener("change", detect_new_slide);
-    //repeated code -- TODO factorize
-    var template = document.getElementById('new-slide');
-    var clone = document.importNode(template.content, true);
-    select_slide(0).appendChild(clone);
 }
 function select_slide(i){
     return document.querySelectorAll("smart-tabs smart-tab-item")[i];
