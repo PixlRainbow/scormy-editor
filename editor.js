@@ -451,6 +451,10 @@ function onSubmit(){
 }
 
 function save_slides(){
+    var blob = new Blob([generate_json()], {type: "application/json;charset=utf-8"});
+    saveAs(blob, "quiz.json");
+}
+function generate_json(){
     Array.from(document.querySelectorAll('textarea.info_editor,qnaSlide')).forEach((elem) => {
         var slideContent = "";
         
@@ -471,8 +475,7 @@ function save_slides(){
         }
         
     });
-    var blob = new Blob([JSON.stringify(window.workingData)], {type: "application/json;charset=utf-8"});
-    saveAs(blob, "quiz.json");
+    return JSON.stringify(window.workingData);
 }
 function generate_manifest(someListOfAssets){
     var req = new XMLHttpRequest();
@@ -502,7 +505,7 @@ function generate_manifest(someListOfAssets){
  * @param {Array} dirStruct 
  * @param {JSZip} zipfile
  */
-function generate_zip(dirStruct, zipfile = null, parent = ""){
+function generate_zip(dirStruct, recurse = false, zipfile = null, parent = ""){
     var curZip;
     if(!zipfile) {
         curZip = new JSZip();
@@ -511,15 +514,100 @@ function generate_zip(dirStruct, zipfile = null, parent = ""){
     }
     dirStruct.forEach((entry) => {
         if(entry.type == "dir"){
-            generate_zip(entry.content, curZip, parent+`/${entry.name}`);
+            generate_zip(entry.content, true, curZip, parent+`/${entry.name}`);
         }else{
             curZip.file(parent+`/${entry.name}`, entry.content);
         }
     });
-    if(!zipfile){
+    if(!recurse){
         return curZip.generateAsync({type:"blob"});
     }
 }
 function export_SCORM(){
-    //
+    var dirStruct = [
+        {
+            type: "file",
+            name: "online.html",
+            content: ""
+        },
+        {
+            type: "file",
+            name: "online.js",
+            content: ""
+        },
+        {
+            type: "file",
+            name: "main.css",
+            content: ""
+        },
+        {
+            type: "file",
+            name: "quiz.json",
+            content: ""
+        },
+        {
+            type: "file",
+            name: "imsmanifest.xml",
+            content: ""
+        }
+    ];
+    var tasks = [];
+    tasks.push(
+        fetch("export_assets/online.html")
+            .then(res => res.text())
+            .then(html => {
+                dirStruct[0].content = html;
+            })
+    );
+    tasks.push(
+        fetch("export_assets/online.js")
+            .then(res => res.text())
+            .then(html => {
+                dirStruct[1].content = html;
+            })
+    );
+    tasks.push(
+        fetch("main.css")
+            .then(res => res.text())
+            .then(html => {
+                dirStruct[2].content = html;
+            })
+    );
+    tasks.push(
+        new Promise((resolve, reject) => {
+            dirStruct[3].content = generate_json();
+            resolve();
+        })
+    );
+    tasks.push(
+        generate_manifest([
+            "online.html",
+            "online.js",
+            "quiz.json",
+            "node_modules/@smarthtmlelements/smart-elements-community/source/styles/smart.default.css",
+            "node_modules/@smarthtmlelements/smart-elements-community/styles/demos.css",
+            "node_modules/@smarthtmlelements/smart-elements-community/styles/common.css",
+            "node_modules/@smarthtmlelements/smart-elements-community/scripts/common.js",
+            "node_modules/@smarthtmlelements/smart-elements-community/scripts/webcomponents-lite.js",
+            "node_modules/@smarthtmlelements/smart-elements-community/source/smart.elements.js"
+        ]).then(manifestXML => {
+            dirStruct[4].content = manifestXML;
+        })
+    );
+    Promise
+        .all(tasks)
+        .then(() => {
+            new JSZip.external.Promise((resolve, reject) => {
+                JSZipUtils.getBinaryContent('export_assets/quiz.zip', (err, data) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(data);
+                    }
+                });
+            })
+            .then(data => JSZip.loadAsync(data))
+            .then(zippedLib => generate_zip(dirStruct, false, zippedLib))
+            .then(blob => saveAs(blob, "quiz.zip"));
+        });
 }

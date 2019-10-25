@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>SCORMy Editor</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/source/styles/smart.default.css" />
+	<link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/demos.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/@smarthtmlelements/smart-elements-community/styles/common.css" />
+    <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/common.js"></script>
+    <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/scripts/webcomponents-lite.js"></script>
+    <script type="text/javascript" src="node_modules/@smarthtmlelements/smart-elements-community/source/smart.elements.js"></script>
+    <script type="text/javascript" src='online.js'></script>
+</head>
+<body onload="start_viewer()">
+    <smart-tabs id="horizontalTabs1" class="demoTabs" selected-index="1" selection-mode="none">
+    </smart-tabs>
+    <div id="navBar" align="center">
+    <smart-button id="backBtn" onclick="prevSlide()">Back</smart-button>
+    <smart-button id="nextBtn" onclick="nextSlide(this)">Next</smart-button>
+    <smart-button id="submitBtn" onclick="onSubmit()">Submit</smart-button>
+    </div>
+</body>
+</html>
