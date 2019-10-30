@@ -6,6 +6,7 @@
   "dependencies": {
     "@babel/standalone": "^7.6.4",
     "@smarthtmlelements/smart-elements-community": "^4.6.0",
+    "@webcomponents/webcomponentsjs": "^2.3.0",
     "ckeditor": "^4.12.1",
     "file-saver": "^2.0.2",
     "jszip": "^3.2.2",
